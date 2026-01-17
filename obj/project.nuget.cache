@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "Tx6c2Rx7YOw=",
+  "success": true,
+  "projectFilePath": "/Users/hamzaelahi/Desktop/Hamza/Projects/practice/InventorySystem/net-api.csproj",
+  "expectedPackageFiles": [
+    "/Users/hamzaelahi/.nuget/packages/microsoft.aspnetcore.openapi/10.0.1/microsoft.aspnetcore.openapi.10.0.1.nupkg.sha512",
+    "/Users/hamzaelahi/.nuget/packages/microsoft.openapi/2.0.0/microsoft.openapi.2.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

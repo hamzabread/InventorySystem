@@ -1,4 +1,4 @@
-namespace PizzaShop.Models;
+namespace InventorySystem.Models;
 
 public class Pizza
 {

@@ -1,45 +1,27 @@
+using Microsoft.EntityFrameworkCore;
+
+using InventorySystem.Data;
 using InventorySystem.Models;
 
 namespace InventorySystem.Services;
 
-public static class PizzaService 
+public interface IPizzaService
 {
-    static List<Pizza> Pizzas {get; }
-    static int nextId = 3;
+    Task<List<Pizza>> GetAll();
+    Task Add(Pizza pizza);
+}
 
-    static PizzaService()
+public class PizzaService: IPizzaService
+{
+    private readonly AppDbContext _context;
+
+    public PizzaService(AppDbContext context) => _context = context;
+
+    public async Task<List<Pizza>> GetAll() => await _context.Pizzas.ToListAsync();
+
+    public async Task Add(Pizza pizza)
     {
-        Pizzas = new List<Pizza>
-        {
-            new Pizza {Id = 1, Name = "Classic Italian", IsGlutenFree = false},
-            new Pizza {Id = 2, Name = "Veggie", IsGlutenFree = true}
-        };
+        _context.Pizzas.Add(pizza);
+        await _context.SaveChangesAsync();
     }
-
-    public static List<Pizza> GetAll() => Pizzas;
-
-    public static Pizza? Get(int id) => Pizzas.FirstOrDefault(p => p.Id == id);
-
-    public static void Add(Pizza pizza)
-    {
-        pizza.Id = nextId++;
-        Pizzas.Add(pizza);
-    }
-
-    public static void Delete(int id)
-    {
-        var pizza = Get(id);
-        if (pizza is null) return;
-
-        Pizzas.Remove(pizza);
-    }
-
-   public static void Update(Pizza pizza)
-    {
-        var Index = Pizzas.FindIndex(p => p.Id == pizza.Id);
-        if (Index == -1) return;
-
-        Pizzas[Index] = pizza;
-    }
-    
 }

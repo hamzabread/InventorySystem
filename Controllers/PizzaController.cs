@@ -1,60 +1,25 @@
 using InventorySystem.Models;
-using InventorySystem.Services;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
-
-namespace InventorySystem.Controllers;
+using InventorySystem.Services;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 
 public class PizzaController : ControllerBase
 {
-    public PizzaController()
-    {
 
-    }
+    private readonly IPizzaService _service;
+
+    public PizzaController(IPizzaService service) => _service = service;
 
     [HttpGet]
-    public ActionResult<List<Pizza>> GetAll() => 
-        PizzaService.GetAll();
-
-    [HttpGet("{id}")]
-    public ActionResult<Pizza> Get(int id)
-    {
-        var pizza = PizzaService.Get(id);
-        if (pizza is null) return NotFound();
-
-        return pizza;
-    }
+    public async Task<ActionResult<List<Pizza>>> Get() => Ok(await _service.GetAll());
 
     [HttpPost]
-    public IActionResult Add(Pizza pizza)
+    public async Task<IActionResult> Add(Pizza pizza)
     {
-        PizzaService.Add(pizza);
-        return CreatedAtAction(nameof(Get), new {id = pizza.Id}, pizza );
-    }
-
-    [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
-    {
-        var pizza = PizzaService.Get(id);
-        if (pizza is null) return NotFound();
-
-        PizzaService.Delete(id);
-        return NoContent();
-    }
-
-    [HttpPut("{id}")]
-    public IActionResult Update(int id, Pizza pizza)
-    {
-        if(id != pizza.Id) return BadRequest();
-
-        var existingPizza = PizzaService.Get(id);
-        if(existingPizza is null) return NotFound();
-
-        PizzaService.Update(pizza);
-        return NoContent();
-    }
- }
-
-
+        await _service.Add(pizza);
+        return Ok();
+    } 
+}
